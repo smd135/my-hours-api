@@ -42,8 +42,8 @@ app.post('/routes', checkAuth, createRoute)
 app.delete('/routes/:id', checkAuth, removeRoute)
 app.patch('/routes', checkAuth, updateRoute)
 // next shift feature
-app.post('/next', checkAuth, addNextShift)
-app.get('/next', checkAuth, getAllNexts)
+// app.post('/next', checkAuth, addNextShift)
+// app.get('/next', checkAuth, getAllNexts)
 
 app.listen(PORT, () => {
    console.log(`Server is running on port ${PORT}`)
