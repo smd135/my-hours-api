@@ -15,8 +15,10 @@ app.use(cors())
 app.use(express.json())
 
 //variables
-const PORT = process.env.PORT;
-const db_password = process.env.db_password
+// const PORT = process.env.PORT;
+const PORT = 5000
+const db_password = 'pamito57'
+// const db_password = process.env.db_password
 //*****************************************/
 function InitDB() {
    try {

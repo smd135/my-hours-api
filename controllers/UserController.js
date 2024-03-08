@@ -20,7 +20,8 @@ export const register = async (req, res) => {
          passwordHash: hash
       })
       const user = await doc.save()
-      const secret = process.env.jwt_secret
+      // const secret = process.env.jwt_secret
+      const secret = 'uiCKlEAvERfo'
       const token = jwt.sign({
          _id: user._id
       }, secret, { expiresIn: '30d' })
@@ -47,7 +48,8 @@ export const login = async (req, res) => {
          return res.status(400).json({ message: "Невірний логін або пароль" });
       }
 
-      const secret = process.env.jwt_secret
+      // const secret = process.env.jwt_secret
+      const secret = "uiCKlEAvERfo"
       const token = jwt.sign({
          _id: user._id
       }, secret, { expiresIn: '30d' })

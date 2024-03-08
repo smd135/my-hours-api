@@ -4,7 +4,8 @@ export default (req, res, next) => {
    const token = (req.headers.authorization || '').replace(/Bearer\s?/, '');
    if (token) {
       try {
-         const secret = process.env.jwt_secret
+         // const secret = process.env.jwt_secret
+         const secret = 'uiCKlEAvERfo'
          const decoded = jwt.verify(token, secret)
 
          req.userId = decoded._id;
