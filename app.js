@@ -7,17 +7,18 @@ import checkAuth from './utils/checkAuth.js';
 import { register, login, getMe } from './controllers/UserController.js'
 import { createRoute, getAllRoutes, getById, getMyRoutes, removeRoute, updateRoute } from './controllers/RouteControllers.js'
 import { addNextShift, getAllNexts } from './controllers/nextShiftController.js';
+import cookieParser from 'cookie-parser';
 
 
 const app = express();
 // middlewares
 app.use(cors())
 app.use(express.json())
-
+app.use(cookieParser())
+dotenv.config({ path: './.env' })
 //variables
 // const PORT = process.env.PORT;
-const PORT = 5000
-const db_password = 'pamito57'
+
 // const db_password = process.env.db_password
 //*****************************************/
 function InitDB() {

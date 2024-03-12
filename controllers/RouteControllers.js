@@ -10,7 +10,7 @@ export const createRoute = async (req, res) => {
       const user = await User.findById(req.userId)
 
       const newRoute = new RouteSchema({
-         username: user.username,
+         name: user.name,
          route_num, start_at, end_at, diff, engine_type, engine_num, train_num, route_etc, author: req.userId
       })
       await newRoute.save()
