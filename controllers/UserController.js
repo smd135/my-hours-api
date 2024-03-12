@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'
 import UserModel from '../models/User.js'
+import { generateToken } from '../utils/generateToken.js'
 
 import { validationResult } from 'express-validator'
 
@@ -10,12 +11,12 @@ export const register = async (req, res) => {
       if (!errors.isEmpty()) {
          return res.status(400).json(errors.array())
       }
-      const { email, username, password } = req.body;
+      const { email, name, password } = req.body;
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
       const doc = new UserModel({
          email,
-         username,
+         name,
          avatarUrl: req.body.avatarUrl,
          passwordHash: hash
       })
@@ -34,32 +35,25 @@ export const register = async (req, res) => {
    }
 
 }
-
+// @desc Auth a user
+// @route POST /auth/login
 export const login = async (req, res) => {
    try {
       const { email, password } = req.body;
       const user = await UserModel.findOne({ email });
-      if (!user) {
-         return res.status(404).json({ message: "Користувача не знайдено" });
+      if (user && (await user.matchPassword(password))) {
+         generateToken(res, user._id)
+         res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+         })
+
+      } else {
+         return res.status(401).json({ message: "Неправильний логін або пароль" });
       }
-      const hashedPassword = user._doc.passwordHash;
-      const isValidPass = await bcrypt.compare(password, hashedPassword)
-      if (!isValidPass) {
-         return res.status(400).json({ message: "Невірний логін або пароль" });
-      }
-
-      // const secret = process.env.jwt_secret
-      const secret = "uiCKlEAvERfo"
-      const token = jwt.sign({
-         _id: user._id
-      }, secret, { expiresIn: '30d' })
-
-      const { passwordHash, ...userData } = user._doc;
-
-      res.json({ ...userData, token })
-
    } catch (error) {
-      res.json({ error: "Не вдалося ввійти" })
+      res.json({ error: "Не вдалося ввійти", error })
       console.log(error)
    }
 }
