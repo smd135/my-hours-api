@@ -6,7 +6,7 @@ import { registerValidation } from './validations/auth.js'
 import checkAuth from './utils/checkAuth.js';
 import { register, login, getMe } from './controllers/UserController.js'
 import { createRoute, getAllRoutes, getById, getMyRoutes, removeRoute, updateRoute } from './controllers/RouteControllers.js'
-import { addNextShift, getAllNexts } from './controllers/nextShiftController.js'
+import { addNextShift, getAllNexts } from './controllers/nextShiftController.js';
 
 
 const app = express();

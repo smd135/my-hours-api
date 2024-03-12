@@ -15,7 +15,7 @@ export const addNextShift = async (req, res) => {
          next_at, next_etc
       })
       await nextShift.save()
-      await User.findByIdAndUpdate(req.userId, {
+      await User.findByIdAndUpdate(id, {
          $push: { nextShifts: nextShift }
       })
       res.json(nextShift)
