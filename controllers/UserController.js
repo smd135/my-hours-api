@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'
 import UserModel from '../models/User.js'
-import { generateToken } from '../utils/generateToken.js'
+import generateToken from '../utils/generateToken.js'
 
 import { validationResult } from 'express-validator'
 
@@ -42,9 +42,11 @@ export const register = async (req, res) => {
 }
 // @desc Auth a user
 // @route POST /auth/login
+
 export const login = async (req, res) => {
+   const { email, password } = req.body;
    try {
-      const { email, password } = req.body;
+
       const user = await UserModel.findOne({ email });
       if (user && (await user.matchPassword(password))) {
          generateToken(res, user._id)
@@ -74,11 +76,17 @@ export const logout = async (req, res) => {
 
 export const getMe = async (req, res) => {
    try {
-      const user = await UserModel.findById(req.userId)
-      if (!user) return res.status(404).json({ message: "Користувача не знайдено" })
+      const user = await UserModel.findById(req.user._id)
 
-      const { ...userData } = user._doc;
-      res.json({ ...userData })
+      if (user) {
+         return res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+         })
+      } else {
+         res.json('Користувача не знайдено')
+      }
 
    } catch (error) {
       console.log(error)

@@ -3,7 +3,8 @@ import User from '../models/User.js'
 
 // Protect routes
 export const protect = async (req, res, next) => {
-   let token = req.cookies.jwt
+   let token;
+   token = req.cookies.jwt
    // Read JWT from cookie
    if (token) {
       try {
@@ -12,10 +13,10 @@ export const protect = async (req, res, next) => {
          next()
       } catch (error) {
          console.log(error)
-         res.json({ message: "Not authorized, no token", error })
+         res.json("Not authorized, token failed", error)
       }
    } else {
       console.log('Not authorized, no token')
-      res.json({ message: 'Not authorized, no token' })
+      res.json("Not authorized, no token")
    }
 }

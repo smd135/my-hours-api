@@ -7,19 +7,19 @@ export const createRoute = async (req, res) => {
       const { route_num, start_at, end_at, engine_type, engine_num, train_num, route_etc } = req.body
       const diff = differenceInMinutes(new Date(end_at), new Date(start_at));
 
-      const user = await User.findById(req.userId)
+      const user = await User.findById(req.user._id)
 
       const newRoute = new RouteSchema({
-         name: user.name,
-         route_num, start_at, end_at, diff, engine_type, engine_num, train_num, route_etc, author: req.userId
+         // name: user.name,
+         route_num, start_at, end_at, engine_type, engine_num, train_num, route_etc, author: user._id
       })
       await newRoute.save()
-      await User.findByIdAndUpdate(req.userId,
+      await User.findByIdAndUpdate(user._id,
          {
             $push: { routes: newRoute },
          }
       )
-      res.json(newRoute)
+      return res.json(newRoute)
    } catch (error) {
       console.log({ message: `Щось пішло не так ! ${error}` })
    }
