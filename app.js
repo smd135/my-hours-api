@@ -10,21 +10,24 @@ import cookieParser from 'cookie-parser';
 import { protect } from './middlewares/authMiddleware.js'
 
 const app = express();
+
 // middlewares
-// app.use(cors({ credentials: true, origin: 'http://localhost:5173' }))
+//app.use(cors())
+app.use(cors({ credentials: true, origin: 'http://localhost:5173' }))
+// app.use(cors({ credentials: true, origin: 'https://routes-254a1.web.app' }))
 // app.use(cors({ credentials: true, origin: ['http://localhost:5173'] }))
 app.use(express.json())
 app.use(cookieParser())
 dotenv.config({ path: './.env' })
 //variables
-const PORT = process.env.PORT || 5006;
+const PORT = 5006;
 const MONGO_URL = process.env.MONGO_URL
 
 // const db_password = process.env.db_password
 //*****************************************/
 function InitDB() {
    try {
-      mongoose.connect(`${MONGO_URL}`)
+      mongoose.connect(`mongodb+srv://misiailoyurii:pamito57@cluster0.idtz4it.mongodb.net/new_routes?retryWrites=true&w=majority&appName=Cluster0`)
       console.log(`Your DB is successfully connected`)
    } catch (error) {
       console.log(error)
@@ -38,12 +41,13 @@ app.post('/auth/login', login)
 app.post('/auth/logout', logout)
 app.get('/auth/me', protect, getMe)
 
+
 // CRUD routes
 app.get('/routes', getAllRoutes)
 app.get('/routes/:id', getById)
 app.post('/routes', protect, createRoute)
 app.delete('/routes/:id', protect, removeRoute)
-app.patch('/routes', protect, updateRoute)
+app.put('/routes', protect, updateRoute)
 // next shift feature
 app.post('/next', protect, addNextShift)
 app.get('/next', protect, getAllNexts)

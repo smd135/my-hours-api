@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 
 const RouteSchema = new mongoose.Schema(
 	{
-		route_num: { type: Number, default: '' },
+		route_num: { type: String, default: '' },
 		start_at: { type: String, required: true },
 		end_at: { type: String },
-		diff: { type: Number },
-		engine_type: { type: String, required: true },
+		diff: { type: Number, default: 0 },
+		engine_type: { type: String },
 		engine_num: { type: String, default: '' },
 		train_num: { type: String, default: '' },
 		author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', },

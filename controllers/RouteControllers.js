@@ -11,7 +11,7 @@ export const createRoute = async (req, res) => {
 
       const newRoute = new RouteSchema({
          // name: user.name,
-         route_num, start_at, end_at, engine_type, engine_num, train_num, route_etc, author: user._id
+         route_num, start_at, end_at, diff, engine_type, engine_num, train_num, route_etc, author: user._id
       })
       await newRoute.save()
       await User.findByIdAndUpdate(user._id,
@@ -66,7 +66,8 @@ export const getMyRoutes = async (req, res) => {
 // Remove route
 export const removeRoute = async (req, res) => {
    try {
-      const route = await RouteSchema.findByIdAndDelete(req.params.id)
+      const id = req.params.id
+      const route = await RouteSchema.findByIdAndDelete(id)
       if (!route) return res.json({ message: 'Маршрут не знайдений!' })
       await User.findByIdAndUpdate(req.userId, {
          $pull: { routes: req.params.id }
@@ -74,13 +75,13 @@ export const removeRoute = async (req, res) => {
       res.json({ message: "Маршрут видалено!" })
    } catch (error) {
       res.json({ message: 'Щось пішло не так !' })
-   }
+   } ``
 }
 // Update route
 export const updateRoute = async (req, res) => {
    try {
-      const { route_num, start_at, end_at, engine_type, engine_num, train_num, route_etc } = req.body
-      const { id } = req.body
+      const { id, route_num, start_at, end_at, engine_type, engine_num, train_num, route_etc } = req.body
+      // const { id } = req.body
       const route = await RouteSchema.findById(id)
       route.route_num = route_num;
       route.start_at = start_at;
