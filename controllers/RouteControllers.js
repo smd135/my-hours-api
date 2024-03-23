@@ -5,7 +5,7 @@ import { differenceInMinutes, differenceInHours } from 'date-fns';
 export const createRoute = async (req, res) => {
    try {
       const { route_num, start_at, end_at, engine_type, engine_num, train_num, route_etc } = req.body
-      const diff = differenceInMinutes(new Date(end_at), new Date(start_at));
+      const diff = end_at ? differenceInMinutes(new Date(end_at), new Date(start_at)) : 0;
 
       const user = await User.findById(req.user._id)
 
@@ -86,6 +86,7 @@ export const updateRoute = async (req, res) => {
       route.route_num = route_num;
       route.start_at = start_at;
       route.end_at = end_at;
+      route.diff = end_at ? differenceInMinutes(new Date(end_at), new Date(start_at)) : 0;
       route.engine_type = engine_type;
       route.engine_num = engine_num;
       route.train_num = train_num;

@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import { registerValidation } from './validations/auth.js'
 import { register, login, logout, getMe } from './controllers/UserController.js'
 import { createRoute, getAllRoutes, getById, getMyRoutes, removeRoute, updateRoute } from './controllers/RouteControllers.js'
-import { addNextShift, getAllNexts } from './controllers/nextShiftController.js';
+import { addNextShift, getAllNexts, getNextById, editNext, deleteNext } from './controllers/nextShiftController.js';
 import cookieParser from 'cookie-parser';
 import { protect } from './middlewares/authMiddleware.js'
 
@@ -13,9 +13,10 @@ const app = express();
 
 // middlewares
 //app.use(cors())
-app.use(cors({ credentials: true, origin: 'http://localhost:5173' }))
-// app.use(cors({ credentials: true, origin: 'https://routes-254a1.web.app' }))
-// app.use(cors({ credentials: true, origin: ['http://localhost:5173'] }))
+app.use(cors({ credentials: true, origin: 'https://routes-254a1.web.app' }))
+// app.use(cors({ credentials: true, origin: 'http://localhost:5173' }))
+
+
 app.use(express.json())
 app.use(cookieParser())
 dotenv.config({ path: './.env' })
@@ -43,7 +44,7 @@ app.get('/auth/me', protect, getMe)
 
 
 // CRUD routes
-app.get('/routes', getAllRoutes)
+app.get('/routes', protect, getAllRoutes)
 app.get('/routes/:id', getById)
 app.post('/routes', protect, createRoute)
 app.delete('/routes/:id', protect, removeRoute)
@@ -51,7 +52,9 @@ app.put('/routes', protect, updateRoute)
 // next shift feature
 app.post('/next', protect, addNextShift)
 app.get('/next', protect, getAllNexts)
-
+app.get('/next/:id', protect, getNextById)
+app.put('/next', protect, editNext)
+app.delete('/next/:id', protect, deleteNext)
 app.listen(PORT, () => {
    console.log(`Server is running on port ${PORT}`)
 })
